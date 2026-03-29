@@ -1,0 +1,225 @@
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {# --- SEO meta (resolved in view context via page_key + seo_pages) --- #}
+  {% if page_key and seo_pages %}
+    {% with cur=seo_pages|default:None %}
+      {% if LANGUAGE_CODE == "ru" %}
+        <title>{% for k, v in seo_pages.items %}{% if k == page_key %}{{ v.meta_title_ru }}{% endif %}{% endfor %}</title>
+        <meta name="description" content="{% for k, v in seo_pages.items %}{% if k == page_key %}{{ v.meta_desc_ru }}{% endif %}{% endfor %}">
+      {% else %}
+        <title>{% for k, v in seo_pages.items %}{% if k == page_key %}{{ v.meta_title_uk }}{% endif %}{% endfor %}</title>
+        <meta name="description" content="{% for k, v in seo_pages.items %}{% if k == page_key %}{{ v.meta_desc_uk }}{% endif %}{% endfor %}">
+      {% endif %}
+    {% endwith %}
+  {% else %}
+    {% block meta_title %}
+      <title>{% if LANGUAGE_CODE == "ru" %}Прочистка канализации Днепр — ROTHENBERGER R 750{% else %}Прочищення каналізації Дніпро — ROTHENBERGER R 750{% endif %}</title>
+      <meta name="description" content="{% if LANGUAGE_CODE == "ru" %}Профессиональная прочистка канализации в Днепре. Электромеханика ROTHENBERGER R 750, гидродинамика, илосос. Без выходных.{% else %}Професійне прочищення каналізації у Дніпрі. ROTHENBERGER R 750, гідродинаміка, ілосос. Без вихідних.{% endif %}">
+    {% endblock %}
+  {% endif %}
+
+  {# --- Open Graph --- #}
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{% if LANGUAGE_CODE == 'ru' %}ru_UA{% else %}uk_UA{% endif %}">
+  <meta property="og:site_name" content="{{ site_settings.company_name }}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  {% block og_extra %}{% endblock %}
+
+  {# --- hreflang --- #}
+  <link rel="alternate" hreflang="uk" href="{{ request.scheme }}://{{ request.get_host }}{% url 'home' %}">
+  <link rel="alternate" hreflang="ru" href="{{ request.scheme }}://{{ request.get_host }}/ru{% url 'home' %}">
+  <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{% url 'home' %}">
+
+  {# --- Canonical --- #}
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  {# --- Favicon --- #}
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+
+  {# --- Fonts --- #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  {# --- Styles --- #}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  {% block extra_css %}{% endblock %}
+
+  {# --- JSON-LD LocalBusiness --- #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "{{ site_settings.company_name }}",
+    "telephone": "{{ site_settings.phone_1 }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "{% if LANGUAGE_CODE == 'ru' %}Днепр{% else %}Дніпро{% endif %}",
+      "addressCountry": "UA"
+    },
+    "openingHours": "Mo-Su 06:00-23:00",
+    "priceRange": "₴₴",
+    "url": "{{ request.scheme }}://{{ request.get_host }}"
+  }
+  </script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+{# ===== HEADER ===== #}
+<header class="site-header" role="banner">
+  <div class="container site-header__inner">
+
+    <a href="{% url 'home' %}" class="site-header__logo" aria-label="{{ site_settings.company_name }}">
+      {% if site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}"
+             alt="{% if LANGUAGE_CODE == 'ru' %}{{ site_settings.logo_alt_ru }}{% else %}{{ site_settings.logo_alt_uk }}{% endif %}"
+             width="160" height="48" loading="eager">
+      {% else %}
+        <span class="site-header__logo-text">{{ site_settings.company_name }}</span>
+      {% endif %}
+    </a>
+
+    <nav class="site-nav" role="navigation" aria-label="{% trans 'Main navigation' %}">
+      <ul class="site-nav__list">
+        <li><a href="{% url 'home' %}" class="site-nav__link {% if request.resolver_match.url_name == 'home' %}site-nav__link--active{% endif %}">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'service_list' %}" class="site-nav__link {% if 'service' in request.resolver_match.url_name %}site-nav__link--active{% endif %}">{% trans "Services" %}</a></li>
+        <li><a href="{% url 'prices' %}" class="site-nav__link {% if request.resolver_match.url_name == 'prices' %}site-nav__link--active{% endif %}">{% trans "Prices" %}</a></li>
+        <li><a href="{% url 'about' %}" class="site-nav__link {% if request.resolver_match.url_name == 'about' %}site-nav__link--active{% endif %}">{% trans "About" %}</a></li>
+        <li><a href="{% url 'contact' %}" class="site-nav__link {% if request.resolver_match.url_name == 'contact' %}site-nav__link--active{% endif %}">{% trans "Contact" %}</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      {# Language switcher #}
+      <div class="lang-switcher" role="navigation" aria-label="Language">
+        {% get_current_language as cur_lang %}
+        <form action="{% url 'set_language' %}" method="post" class="lang-switcher__form">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          {% for lang_code, lang_name in LANGUAGES %}
+            <button type="submit" name="language" value="{{ lang_code }}"
+                    class="lang-switcher__btn {% if lang_code == cur_lang %}lang-switcher__btn--active{% endif %}"
+                    aria-label="{{ lang_name }}"
+                    aria-current="{% if lang_code == cur_lang %}true{% else %}false{% endif %}">
+              {{ lang_code|upper }}
+            </button>
+          {% endfor %}
+        </form>
+      </div>
+
+      <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="btn btn--primary btn--sm site-header__call">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z"/></svg>
+        {{ site_settings.phone_1 }}
+      </a>
+    </div>
+
+    <button class="hamburger" aria-label="{% trans 'Open menu' %}" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </div>
+
+  {# Mobile menu #}
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-nav" role="navigation">
+      <ul class="mobile-nav__list">
+        <li><a href="{% url 'home' %}" class="mobile-nav__link">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'service_list' %}" class="mobile-nav__link">{% trans "Services" %}</a></li>
+        <li><a href="{% url 'prices' %}" class="mobile-nav__link">{% trans "Prices" %}</a></li>
+        <li><a href="{% url 'about' %}" class="mobile-nav__link">{% trans "About" %}</a></li>
+        <li><a href="{% url 'contact' %}" class="mobile-nav__link">{% trans "Contact" %}</a></li>
+      </ul>
+      <div class="mobile-nav__contacts">
+        <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="mobile-nav__phone">{{ site_settings.phone_1 }}</a>
+        {% if site_settings.phone_2 %}
+          <a href="tel:{{ site_settings.phone_2|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="mobile-nav__phone">{{ site_settings.phone_2 }}</a>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</header>
+
+{# ===== MAIN ===== #}
+<main id="main-content" tabindex="-1">
+  {% block content %}{% endblock %}
+</main>
+
+{# ===== FOOTER ===== #}
+<footer class="site-footer" role="contentinfo">
+  <div class="container site-footer__inner">
+
+    <div class="site-footer__brand">
+      <a href="{% url 'home' %}" class="site-footer__logo-link" aria-label="{{ site_settings.company_name }}">
+        {% if site_settings.logo %}
+          <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.company_name }}" width="140" height="42" loading="lazy">
+        {% else %}
+          <span class="site-footer__company-name">{{ site_settings.company_name }}</span>
+        {% endif %}
+      </a>
+      <p class="site-footer__tagline">
+        {% if LANGUAGE_CODE == "ru" %}{{ site_settings.footer_text_ru }}{% else %}{{ site_settings.footer_text_uk }}{% endif %}
+      </p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      <ul>
+        <li><a href="{% url 'service_list' %}">{% trans "Services" %}</a></li>
+        <li><a href="{% url 'prices' %}">{% trans "Prices" %}</a></li>
+        <li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+        <li><a href="{% url 'contact' %}">{% trans "Contact" %}</a></li>
+      </ul>
+    </nav>
+
+    <address class="site-footer__contacts">
+      <p>
+        <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ site_settings.phone_1 }}</a>
+      </p>
+      {% if site_settings.phone_2 %}
+        <p><a href="tel:{{ site_settings.phone_2|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ site_settings.phone_2 }}</a></p>
+      {% endif %}
+      {% if site_settings.email %}
+        <p><a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a></p>
+      {% endif %}
+      <p>{% if LANGUAGE_CODE == "ru" %}{{ site_settings.address_ru }}{% else %}{{ site_settings.address_uk }}{% endif %}</p>
+      <p>{% if LANGUAGE_CODE == "ru" %}{{ site_settings.working_hours_ru }}{% else %}{{ site_settings.working_hours_uk }}{% endif %}</p>
+    </address>
+
+    <div class="site-footer__messengers">
+      {% if site_settings.phone_1_viber %}
+        <a href="viber://chat?number={{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-'|cut:'+' }}"
+           class="messenger-link messenger-link--viber" aria-label="Viber">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.4 0C5.5 0 1 4.3 1 9.8c0 2.7 1.1 5.2 3.1 7l-.8 3.8 3.9-1c1 .5 2.2.8 3.3.8h.4c5.9 0 10.4-4.3 10.4-9.8C21.3 4.3 17.3 0 11.4 0zm.4 17.7h-.3c-1 0-1.9-.2-2.8-.6l-2.6.7.7-2.5C5.1 14 4 12 4 9.8 4 5.9 7.3 2.7 11.8 2.7c4.4 0 7.5 3.1 7.5 7.1 0 4-3.2 7.3-7.5 7.3zm4.3-5.5c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.1-.3.2-.5.1-.2-.1-.9-.3-1.7-1-.6-.6-1-1.2-1.1-1.4-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.2.2-.4V9c0-.1-.3-.9-.4-1.2-.1-.3-.2-.3-.4-.3h-.3c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2 1 2.4c.1.2 1.6 2.5 3.9 3.4.5.2.9.4 1.2.5.5.1 1 .1 1.4 0 .4-.1 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/></svg>
+        </a>
+      {% endif %}
+      {% if site_settings.phone_1_telegram %}
+        <a href="https://t.me/{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-'|cut:'+' }}"
+           class="messenger-link messenger-link--telegram" aria-label="Telegram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.9 8.2l-2 9.4c-.1.7-.6.8-1.1.5l-3-2.2-1.4 1.4c-.2.2-.4.3-.7.3l.3-3.1 5.7-5.2c.2-.2 0-.3-.3-.1L5.5 13.6 2.5 12.7c-.6-.2-.7-.6.2-.9l11.5-4.4c.7-.3 1.4.1 1.7.8z"/></svg>
+        </a>
+      {% endif %}
+    </div>
+
+  </div>
+  <div class="site-footer__bottom">
+    <div class="container">
+      <p>&copy; {% now "Y" %} {{ site_settings.company_name }}. {% trans "Copyright" %}.</p>
+    </div>
+  </div>
+</footer>
+
+{# ===== Scripts ===== #}
+<script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
+<script src="{% static 'js/main.js' %}" defer></script>
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

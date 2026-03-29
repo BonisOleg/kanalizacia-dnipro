@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+<section class="page-hero section">
+  <div class="container">
+    <h1 class="page-hero__heading">{% trans "Services" %}</h1>
+  </div>
+</section>
+
+<section class="services section" aria-labelledby="services-list-heading">
+  <div class="container">
+    <h2 class="section__heading visually-hidden" id="services-list-heading">{% trans "Our services" %}</h2>
+    <div class="services-grid services-grid--full">
+      {% for service in services %}
+      <article class="service-card service-card--full service-card--{{ service.slug }}" itemscope itemtype="https://schema.org/Service">
+        <div class="service-card__content">
+          <h3 class="service-card__name" itemprop="name">
+            {% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %}
+          </h3>
+          <p class="service-card__desc" itemprop="description">
+            {% if LANGUAGE_CODE == "ru" %}{{ service.short_desc_ru }}{% else %}{{ service.short_desc_uk }}{% endif %}
+          </p>
+          {% if service.price_from %}
+            <p class="service-card__price">
+              {% trans "Price from" %} <strong>{{ service.price_from }} {% trans "UAH" %}</strong>
+            </p>
+          {% endif %}
+          <a href="{{ service.get_absolute_url }}" class="btn btn--primary btn--sm">{% trans "Learn more" %}</a>
+        </div>
+      </article>
+      {% empty %}
+        <p>{% if LANGUAGE_CODE == "ru" %}Услуги скоро будут добавлены.{% else %}Послуги незабаром будуть додані.{% endif %}</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

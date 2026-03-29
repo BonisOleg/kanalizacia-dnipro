@@ -1,0 +1,36 @@
+{% load i18n %}
+<div class="quiz">
+  <div class="quiz__progress" role="progressbar" aria-valuenow="4" aria-valuemin="1" aria-valuemax="4">
+    {% for i in "1234" %}<div class="quiz__progress-dot quiz__progress-dot--active" aria-hidden="true"></div>{% endfor %}
+  </div>
+  <p class="quiz__step-label">{% trans "Step" %} 4 {% trans "of" %} 4</p>
+
+  <form class="quiz__form"
+        hx-post="{% url 'quiz_step' step=4 %}"
+        hx-target=".quiz-container"
+        hx-swap="innerHTML"
+        novalidate>
+    {% csrf_token %}
+    <fieldset class="quiz__fieldset">
+      <legend class="quiz__legend">{{ form.messenger.label }}</legend>
+      <div class="quiz__options quiz__options--messenger">
+        {% for choice_val, choice_label in form.messenger.field.choices %}
+          <label class="quiz__option">
+            <input type="radio" name="messenger" value="{{ choice_val }}" class="quiz__radio">
+            <span class="quiz__option-text">{{ choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="form-field {% if form.phone.errors %}form-field--error{% endif %}">
+      <label class="form-field__label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+      {{ form.phone }}
+      {% if form.phone.errors %}
+        <ul class="form-field__errors" role="alert">{% for e in form.phone.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--full quiz__next">{% trans "Submit" %}</button>
+  </form>
+</div>

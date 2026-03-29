@@ -1,0 +1,120 @@
+# Russian translations
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Services"
+msgstr "Услуги"
+
+msgid "Prices"
+msgstr "Цены"
+
+msgid "About"
+msgstr "О нас"
+
+msgid "Contact"
+msgstr "Контакты"
+
+msgid "Call us"
+msgstr "Позвоните нам"
+
+msgid "Order service"
+msgstr "Заказать услугу"
+
+msgid "Calculate cost"
+msgstr "Рассчитать стоимость"
+
+msgid "Send message"
+msgstr "Отправить сообщение"
+
+msgid "Our services"
+msgstr "Наши услуги"
+
+msgid "Why choose us"
+msgstr "Почему выбирают нас"
+
+msgid "How we work"
+msgstr "Как мы работаем"
+
+msgid "Reviews"
+msgstr "Отзывы"
+
+msgid "FAQ"
+msgstr "Частые вопросы"
+
+msgid "Price from"
+msgstr "От"
+
+msgid "UAH"
+msgstr "грн"
+
+msgid "Learn more"
+msgstr "Подробнее"
+
+msgid "Back to services"
+msgstr "Назад к услугам"
+
+msgid "Related services"
+msgstr "Похожие услуги"
+
+msgid "All services"
+msgstr "Все услуги"
+
+msgid "Get consultation"
+msgstr "Получить консультацию"
+
+msgid "Working hours"
+msgstr "Часы работы"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Write to us"
+msgstr "Написать нам"
+
+msgid "Step"
+msgstr "Шаг"
+
+msgid "of"
+msgstr "из"
+
+msgid "Next"
+msgstr "Далее"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Submit"
+msgstr "Отправить"
+
+msgid "Thank you! We will contact you shortly."
+msgstr "Спасибо! Мы свяжемся с вами в ближайшее время."
+
+msgid "Your application has been received."
+msgstr "Ваша заявка получена."
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Price on request"
+msgstr "Цена по договорённости"
+
+msgid "Years of experience"
+msgstr "Лет опыта"
+
+msgid "Happy clients"
+msgstr "Довольных клиентов"
+
+msgid "Satisfaction rate"
+msgstr "Клиентов довольны"
+
+msgid "Copyright"
+msgstr "Все права защищены"
+
+msgid "Privacy policy"
+msgstr "Политика конфиденциальности"

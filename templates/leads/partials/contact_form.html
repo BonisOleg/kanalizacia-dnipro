@@ -1,0 +1,24 @@
+{% load i18n %}
+<form class="contact-form"
+      hx-post="{% url 'contact_submit' %}"
+      hx-target="#contact-form-container"
+      hx-swap="innerHTML"
+      novalidate>
+  {% csrf_token %}
+  {% for field in form %}
+    {% if field.field.widget.input_type == "hidden" %}
+      {{ field }}
+    {% else %}
+      <div class="form-field {% if field.errors %}form-field--error{% endif %}">
+        <label class="form-field__label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <ul class="form-field__errors" role="alert">
+            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+  <button type="submit" class="btn btn--primary btn--full">{% trans "Send message" %}</button>
+</form>

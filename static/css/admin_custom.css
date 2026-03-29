@@ -1,0 +1,36 @@
+/* Custom admin branding */
+:root {
+  --primary: #2e7d32;
+  --secondary: #1b5e20;
+  --accent: #66bb6a;
+}
+
+#header {
+  background: #1b5e20;
+}
+
+.module h2, .module caption, .inline-group h2 {
+  background: #2e7d32;
+}
+
+div.breadcrumbs {
+  background: #4caf50;
+}
+
+a:link, a:visited {
+  color: #1b5e20;
+}
+
+.button, input[type=submit], input[type=button],
+.submit-row input, a.button {
+  background: #2e7d32;
+  border-color: #1b5e20;
+}
+
+.button:hover, input[type=submit]:hover {
+  background: #1b5e20;
+}
+
+.button.default, input[type=submit].default {
+  background: #2e7d32;
+}

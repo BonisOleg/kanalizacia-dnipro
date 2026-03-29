@@ -1,0 +1,30 @@
+{% load i18n %}
+<div class="quiz">
+  <div class="quiz__progress" role="progressbar" aria-valuenow="3" aria-valuemin="1" aria-valuemax="4">
+    {% for i in "1234" %}<div class="quiz__progress-dot {% if forloop.counter <= 3 %}quiz__progress-dot--active{% endif %}" aria-hidden="true"></div>{% endfor %}
+  </div>
+  <p class="quiz__step-label">{% trans "Step" %} 3 {% trans "of" %} 4</p>
+
+  <form class="quiz__form"
+        hx-post="{% url 'quiz_step' step=3 %}"
+        hx-target=".quiz-container"
+        hx-swap="innerHTML"
+        novalidate>
+    {% csrf_token %}
+    <fieldset class="quiz__fieldset">
+      <legend class="quiz__legend">{{ form.smell.label }}</legend>
+      <div class="quiz__options">
+        {% for choice_val, choice_label in form.smell.field.choices %}
+          <label class="quiz__option">
+            <input type="radio" name="smell" value="{{ choice_val }}" class="quiz__radio" required>
+            <span class="quiz__option-text">{{ choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      {% if form.smell.errors %}
+        <ul class="form-field__errors" role="alert">{% for e in form.smell.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </fieldset>
+    <button type="submit" class="btn btn--primary btn--full quiz__next">{% trans "Next" %}</button>
+  </form>
+</div>

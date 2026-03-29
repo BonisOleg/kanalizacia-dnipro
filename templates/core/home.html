@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+{# ===== HERO ===== #}
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero__bg parallax-bg" style="--bg-desktop: url('{% static 'img/hiro1.webp' %}'); --bg-mobile: url('{% static 'img/hiro1m.webp' %}');" aria-hidden="true"></div>
+  <div class="container hero__content">
+    <h1 class="hero__heading" id="hero-heading">
+      {% if LANGUAGE_CODE == "ru" %}{{ hero.heading_ru }}{% else %}{{ hero.heading_uk }}{% endif %}
+    </h1>
+    <p class="hero__subheading">
+      {% if LANGUAGE_CODE == "ru" %}{{ hero.subheading_ru }}{% else %}{{ hero.subheading_uk }}{% endif %}
+    </p>
+    <div class="hero__cta">
+      <a href="#quiz" class="btn btn--primary btn--lg">
+        {% if LANGUAGE_CODE == "ru" %}{{ hero.cta_primary_ru }}{% else %}{{ hero.cta_primary_uk }}{% endif %}
+      </a>
+      <a href="{% url 'service_list' %}" class="btn btn--primary btn--lg">
+        {% if LANGUAGE_CODE == "ru" %}{{ hero.cta_secondary_ru }}{% else %}{{ hero.cta_secondary_uk }}{% endif %}
+      </a>
+    </div>
+    <div class="hero__trust">
+      <div class="hero__trust-item">
+        <strong class="hero__trust-number">{{ site_settings.years_experience }}+</strong>
+        <span class="hero__trust-label">{% trans "Years of experience" %}</span>
+      </div>
+      <div class="hero__trust-item">
+        <strong class="hero__trust-number">{{ site_settings.clients_count }}</strong>
+        <span class="hero__trust-label">{% trans "Happy clients" %}</span>
+      </div>
+      <div class="hero__trust-item">
+        <strong class="hero__trust-number">{{ site_settings.satisfaction_rate }}</strong>
+        <span class="hero__trust-label">{% trans "Satisfaction rate" %}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ===== WHY US ===== #}
+{% if why_us %}
+<section class="why-us section parallax-section" aria-labelledby="why-heading">
+  <div class="why-us__bg parallax-bg" style="--bg-desktop: url('{% static 'img/hiro2.webp' %}'); --bg-mobile: url('{% static 'img/hiro2m.webp' %}');" aria-hidden="true"></div>
+  <div class="container why-us__content">
+    <h2 class="section__heading section__heading--light" id="why-heading">{% trans "Why choose us" %}</h2>
+    <div class="why-us__grid">
+      {% for item in why_us %}
+      <div class="why-us__item">
+        {% if item.icon_svg %}
+          <div class="why-us__icon" aria-hidden="true">{{ item.icon_svg|safe }}</div>
+        {% endif %}
+        <h3 class="why-us__title">
+          {% if LANGUAGE_CODE == "ru" %}{{ item.title_ru }}{% else %}{{ item.title_uk }}{% endif %}
+        </h3>
+        {% if item.description_uk or item.description_ru %}
+          <p class="why-us__desc">
+            {% if LANGUAGE_CODE == "ru" %}{{ item.description_ru }}{% else %}{{ item.description_uk }}{% endif %}
+          </p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===== SERVICES ===== #}
+{% if services %}
+<section class="services-preview section" aria-labelledby="services-heading">
+  <div class="container">
+    <h2 class="section__heading" id="services-heading">{% trans "Our services" %}</h2>
+    <div class="services-grid">
+      {% for service in services %}
+      <article class="service-card service-card--{{ service.slug }}">
+        <div class="service-card__content">
+          <h3 class="service-card__name">
+            {% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %}
+          </h3>
+          <p class="service-card__desc">
+            {% if LANGUAGE_CODE == "ru" %}{{ service.short_desc_ru }}{% else %}{{ service.short_desc_uk }}{% endif %}
+          </p>
+          {% if service.price_from %}
+            <p class="service-card__price">
+              {% trans "Price from" %} <strong>{{ service.price_from }} {% trans "UAH" %}</strong>
+            </p>
+          {% endif %}
+          <a href="{{ service.get_absolute_url }}" class="btn btn--primary btn--sm">{% trans "Learn more" %}</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="services-preview__more">
+      <a href="{% url 'service_list' %}" class="btn btn--outline">{% trans "All services" %}</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===== HOW WE WORK ===== #}
+{% if steps %}
+<section class="how-we-work section" aria-labelledby="how-heading">
+  <div class="container">
+    <h2 class="section__heading" id="how-heading">{% trans "How we work" %}</h2>
+    <ol class="steps" role="list">
+      {% for step in steps %}
+      <li class="steps__item">
+        <div class="steps__number" aria-hidden="true">{{ step.number }}</div>
+        <div class="steps__content">
+          <h3 class="steps__title">
+            {% if LANGUAGE_CODE == "ru" %}{{ step.title_ru }}{% else %}{{ step.title_uk }}{% endif %}
+          </h3>
+          <p class="steps__desc">
+            {% if LANGUAGE_CODE == "ru" %}{{ step.description_ru }}{% else %}{{ step.description_uk }}{% endif %}
+          </p>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+{% endif %}
+
+{# ===== QUIZ CTA ===== #}
+<section class="quiz-section section section--green" id="quiz" aria-labelledby="quiz-heading">
+  <div class="container">
+    <div class="quiz-wrapper">
+      <div class="quiz-intro">
+        <h2 class="section__heading section__heading--light" id="quiz-heading">
+          {% if LANGUAGE_CODE == "ru" %}Рассчитайте стоимость за 4 шага{% else %}Розрахуйте вартість за 4 кроки{% endif %}
+        </h2>
+        <p class="quiz-intro__text">
+          {% if LANGUAGE_CODE == "ru" %}
+            Ответьте на простые вопросы — мы свяжемся с вами и назовём точную цену.
+          {% else %}
+            Дайте відповідь на прості питання — ми зв'яжемося з вами і назвемо точну ціну.
+          {% endif %}
+        </p>
+      </div>
+      <div class="quiz-container"
+           hx-get="{% url 'quiz_start' %}"
+           hx-trigger="load"
+           hx-swap="innerHTML">
+        <div class="quiz-loading" aria-live="polite">
+          <div class="spinner" aria-label="{% if LANGUAGE_CODE == 'ru' %}Загрузка...{% else %}Завантаження...{% endif %}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ===== REVIEWS ===== #}
+{% if reviews %}
+<section class="reviews section section--alt" aria-labelledby="reviews-heading">
+  <div class="container">
+    <h2 class="section__heading" id="reviews-heading">{% trans "Reviews" %}</h2>
+    <div class="reviews__grid">
+      {% for review in reviews %}
+      <article class="review-card">
+        <header class="review-card__header">
+          {% if review.photo %}
+            <img src="{{ review.photo.url }}" alt="{{ review.author_name }}" class="review-card__photo" width="48" height="48" loading="lazy">
+          {% else %}
+            <div class="review-card__avatar" aria-hidden="true">{{ review.author_name|slice:":1" }}</div>
+          {% endif %}
+          <div class="review-card__meta">
+            <strong class="review-card__name">{{ review.author_name }}</strong>
+            {% if review.service_uk %}
+              <span class="review-card__service">
+                {% if LANGUAGE_CODE == "ru" %}{{ review.service_ru }}{% else %}{{ review.service_uk }}{% endif %}
+              </span>
+            {% endif %}
+          </div>
+          <div class="review-card__stars" aria-label="Оцінка: {{ review.rating }} з 5">
+            {% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}
+          </div>
+        </header>
+        <blockquote class="review-card__text">
+          {% if LANGUAGE_CODE == "ru" %}{{ review.text_ru }}{% else %}{{ review.text_uk }}{% endif %}
+        </blockquote>
+        <footer class="review-card__date">{{ review.created_at|date:"d.m.Y" }}</footer>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ===== FAQ ===== #}
+{% if faqs %}
+<section class="faq section parallax-section" aria-labelledby="faq-heading">
+  <div class="faq__bg parallax-bg" style="--bg-desktop: url('{% static 'img/hiro2.webp' %}'); --bg-mobile: url('{% static 'img/hiro2m.webp' %}');" aria-hidden="true"></div>
+  <div class="container faq__content">
+    <h2 class="section__heading section__heading--light" id="faq-heading">{% trans "FAQ" %}</h2>
+    <dl class="faq__list">
+      {% for faq in faqs %}
+      <div class="faq__item">
+        <dt class="faq__question" role="button" tabindex="0" aria-expanded="false">
+          {% if LANGUAGE_CODE == "ru" %}{{ faq.question_ru }}{% else %}{{ faq.question_uk }}{% endif %}
+          <svg class="faq__chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </dt>
+        <dd class="faq__answer" hidden>
+          {% if LANGUAGE_CODE == "ru" %}{{ faq.answer_ru }}{% else %}{{ faq.answer_uk }}{% endif %}
+        </dd>
+      </div>
+      {% endfor %}
+    </dl>
+  </div>
+</section>
+{% endif %}
+
+{# ===== FINAL CTA ===== #}
+<section class="cta-banner section section--green">
+  <div class="container cta-banner__inner">
+    <div class="cta-banner__text">
+      <h2 class="cta-banner__heading">
+        {% if LANGUAGE_CODE == "ru" %}Забита канализация? Позвоните прямо сейчас!{% else %}Забита каналізація? Зателефонуйте прямо зараз!{% endif %}
+      </h2>
+      <p>{% if LANGUAGE_CODE == "ru" %}{{ site_settings.working_hours_ru }}{% else %}{{ site_settings.working_hours_uk }}{% endif %}</p>
+    </div>
+    <div class="cta-banner__actions">
+      <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="btn btn--white btn--lg">
+        {{ site_settings.phone_1 }}
+      </a>
+      {% if site_settings.phone_2 %}
+        <a href="tel:{{ site_settings.phone_2|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="btn btn--outline-white btn--lg">
+          {{ site_settings.phone_2 }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

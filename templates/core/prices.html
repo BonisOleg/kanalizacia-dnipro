@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+<section class="page-hero section">
+  <div class="container">
+    <h1 class="page-hero__heading">{% trans "Prices" %}</h1>
+  </div>
+</section>
+
+<section class="prices section" aria-labelledby="prices-heading">
+  <div class="container">
+    <h2 class="section__heading visually-hidden" id="prices-heading">{% trans "Prices" %}</h2>
+
+    <div class="price-table-wrap">
+      <table class="price-table" role="table">
+        <caption class="visually-hidden">{% trans "Prices" %}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{% trans "Services" %}</th>
+            <th scope="col">{% trans "Price" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for service in services %}
+          <tr>
+            <td>
+              <a href="{{ service.get_absolute_url }}" class="price-table__service-link">
+                {% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %}
+              </a>
+              {% if service.price_note_uk %}
+                <small class="price-table__note">
+                  {% if LANGUAGE_CODE == "ru" %}{{ service.price_note_ru }}{% else %}{{ service.price_note_uk }}{% endif %}
+                </small>
+              {% endif %}
+            </td>
+            <td class="price-table__price">
+              {% if service.price_from and service.price_to %}
+                {{ service.price_from }}–{{ service.price_to }} {% trans "UAH" %}
+              {% elif service.price_from %}
+                {% trans "Price from" %} {{ service.price_from }} {% trans "UAH" %}
+              {% else %}
+                {% trans "Price on request" %}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prices__note">
+      <p>
+        {% if LANGUAGE_CODE == "ru" %}
+          * Окончательная стоимость определяется после осмотра мастером. Выезд бесплатно.
+        {% else %}
+          * Остаточна вартість визначається після огляду майстром. Виїзд безкоштовно.
+        {% endif %}
+      </p>
+      <a href="{% url 'contact' %}" class="btn btn--primary">{% trans "Get consultation" %}</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

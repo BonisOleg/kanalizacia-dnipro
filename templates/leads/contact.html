@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+<section class="page-hero section">
+  <div class="container">
+    <h1 class="page-hero__heading">{% trans "Contact" %}</h1>
+  </div>
+</section>
+
+<section class="contact section" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="contact__inner">
+
+      <address class="contact__info">
+        <h2 class="section__heading" id="contact-heading">
+          {% if LANGUAGE_CODE == "ru" %}Свяжитесь с нами{% else %}Зв'яжіться з нами{% endif %}
+        </h2>
+        <ul class="contact__list">
+          <li class="contact__item">
+            <svg class="contact__icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z"/></svg>
+            <div>
+              <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="contact__phone">{{ site_settings.phone_1 }}</a>
+              {% if site_settings.phone_2 %}
+                <a href="tel:{{ site_settings.phone_2|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="contact__phone">{{ site_settings.phone_2 }}</a>
+              {% endif %}
+            </div>
+          </li>
+          {% if site_settings.email %}
+          <li class="contact__item">
+            <svg class="contact__icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>
+          </li>
+          {% endif %}
+          <li class="contact__item">
+            <svg class="contact__icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{% if LANGUAGE_CODE == "ru" %}{{ site_settings.address_ru }}{% else %}{{ site_settings.address_uk }}{% endif %}</span>
+          </li>
+          <li class="contact__item">
+            <svg class="contact__icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>{% if LANGUAGE_CODE == "ru" %}{{ site_settings.working_hours_ru }}{% else %}{{ site_settings.working_hours_uk }}{% endif %}</span>
+          </li>
+        </ul>
+      </address>
+
+      <div class="contact__form-wrap">
+        <h2 class="section__heading">{% trans "Write to us" %}</h2>
+        <div id="contact-form-container"
+             hx-get="{% url 'contact' %}"
+             hx-trigger="none">
+          {% include "leads/partials/contact_form.html" %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

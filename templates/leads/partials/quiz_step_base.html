@@ -1,0 +1,11 @@
+{% load i18n %}
+{% comment %}Base quiz layout — included by each step partial{% endcomment %}
+<div class="quiz" role="form" aria-label="{% trans 'Calculate cost' %}">
+  <div class="quiz__progress" role="progressbar" aria-valuenow="{{ step }}" aria-valuemin="1" aria-valuemax="4">
+    {% for i in "1234" %}
+      <div class="quiz__progress-dot {% if forloop.counter <= step %}quiz__progress-dot--active{% endif %}" aria-hidden="true"></div>
+    {% endfor %}
+  </div>
+  <p class="quiz__step-label">{% trans "Step" %} {{ step }} {% trans "of" %} 4</p>
+  {% block quiz_form %}{% endblock %}
+</div>

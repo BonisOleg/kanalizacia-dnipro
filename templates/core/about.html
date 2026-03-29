@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+
+<section class="page-hero section">
+  <div class="container">
+    <h1 class="page-hero__heading">{% trans "About" %}</h1>
+  </div>
+</section>
+
+<section class="about section" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about__inner">
+      <div class="about__text">
+        <h2 class="section__heading" id="about-heading">
+          {% if LANGUAGE_CODE == "ru" %}{{ about.heading_ru }}{% else %}{{ about.heading_uk }}{% endif %}
+        </h2>
+        <div class="about__body">
+          {% if LANGUAGE_CODE == "ru" %}
+            {{ about.text_ru|linebreaks }}
+          {% else %}
+            {{ about.text_uk|linebreaks }}
+          {% endif %}
+        </div>
+        <a href="{% url 'contact' %}" class="btn btn--primary btn--lg">{% trans "Get consultation" %}</a>
+      </div>
+      {% if about.image %}
+        <figure class="about__image-wrap">
+          <img src="{{ about.image.url }}"
+               alt="{% if LANGUAGE_CODE == 'ru' %}{{ about.image_alt_ru|default:'Команда майстрів' }}{% else %}{{ about.image_alt_uk|default:'Team' }}{% endif %}"
+               class="about__image"
+               loading="lazy"
+               width="600" height="450">
+        </figure>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

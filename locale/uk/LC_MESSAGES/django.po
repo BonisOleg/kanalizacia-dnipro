@@ -1,0 +1,120 @@
+# Ukrainian translations
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uk\n"
+
+msgid "Home"
+msgstr "Головна"
+
+msgid "Services"
+msgstr "Послуги"
+
+msgid "Prices"
+msgstr "Ціни"
+
+msgid "About"
+msgstr "Про нас"
+
+msgid "Contact"
+msgstr "Контакти"
+
+msgid "Call us"
+msgstr "Зателефонуйте"
+
+msgid "Order service"
+msgstr "Замовити послугу"
+
+msgid "Calculate cost"
+msgstr "Розрахувати вартість"
+
+msgid "Send message"
+msgstr "Надіслати повідомлення"
+
+msgid "Our services"
+msgstr "Наші послуги"
+
+msgid "Why choose us"
+msgstr "Чому обирають нас"
+
+msgid "How we work"
+msgstr "Як ми працюємо"
+
+msgid "Reviews"
+msgstr "Відгуки"
+
+msgid "FAQ"
+msgstr "Часті питання"
+
+msgid "Price from"
+msgstr "Від"
+
+msgid "UAH"
+msgstr "грн"
+
+msgid "Learn more"
+msgstr "Детальніше"
+
+msgid "Back to services"
+msgstr "Назад до послуг"
+
+msgid "Related services"
+msgstr "Схожі послуги"
+
+msgid "All services"
+msgstr "Усі послуги"
+
+msgid "Get consultation"
+msgstr "Отримати консультацію"
+
+msgid "Working hours"
+msgstr "Години роботи"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Write to us"
+msgstr "Написати нам"
+
+msgid "Step"
+msgstr "Крок"
+
+msgid "of"
+msgstr "з"
+
+msgid "Next"
+msgstr "Далі"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Submit"
+msgstr "Надіслати"
+
+msgid "Thank you! We will contact you shortly."
+msgstr "Дякуємо! Ми зв'яжемося з вами найближчим часом."
+
+msgid "Your application has been received."
+msgstr "Вашу заявку отримано."
+
+msgid "Price"
+msgstr "Ціна"
+
+msgid "Price on request"
+msgstr "Ціна за домовленістю"
+
+msgid "Years of experience"
+msgstr "Років досвіду"
+
+msgid "Happy clients"
+msgstr "Задоволених клієнтів"
+
+msgid "Satisfaction rate"
+msgstr "Клієнтів задоволені"
+
+msgid "Copyright"
+msgstr "Всі права захищені"
+
+msgid "Privacy policy"
+msgstr "Політика конфіденційності"

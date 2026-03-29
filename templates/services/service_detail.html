@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block meta_title %}
+  <title>{% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %} — {{ site_settings.company_name }}</title>
+  <meta name="description" content="{% if LANGUAGE_CODE == 'ru' %}{{ service.short_desc_ru }}{% else %}{{ service.short_desc_uk }}{% endif %}">
+{% endblock %}
+
+{% block content %}
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol class="container" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="{% url 'home' %}"><span itemprop="name">{% trans "Home" %}</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="{% url 'service_list' %}"><span itemprop="name">{% trans "Services" %}</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="name">{% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %}</span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+
+<article class="service-detail section" itemscope itemtype="https://schema.org/Service">
+  <div class="container">
+    <div class="service-detail__inner">
+      <div class="service-detail__content">
+        <h1 class="service-detail__heading" itemprop="name">
+          {% if LANGUAGE_CODE == "ru" %}{{ service.name_ru }}{% else %}{{ service.name_uk }}{% endif %}
+        </h1>
+
+        {% if service.price_from %}
+          <div class="service-detail__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+            <span class="service-detail__price-label">{% trans "Price from" %}</span>
+            <strong class="service-detail__price-value" itemprop="price">{{ service.price_from }}</strong>
+            <meta itemprop="priceCurrency" content="UAH">
+            <span class="service-detail__price-currency">{% trans "UAH" %}</span>
+            {% if service.price_to %}
+              <span>— {{ service.price_to }} {% trans "UAH" %}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="service-detail__body prose" itemprop="description">
+          {% if LANGUAGE_CODE == "ru" %}{{ service.full_desc_ru|linebreaks }}{% else %}{{ service.full_desc_uk|linebreaks }}{% endif %}
+        </div>
+
+        <div class="service-detail__actions">
+          <a href="{% url 'contact' %}" class="btn btn--primary btn--lg">{% trans "Order service" %}</a>
+          <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="btn btn--outline btn--lg">
+            {% trans "Call us" %}: {{ site_settings.phone_1 }}
+          </a>
+        </div>
+
+        <a href="{% url 'service_list' %}" class="service-detail__back">← {% trans "Back to services" %}</a>
+      </div>
+
+      {% if service.image %}
+        <figure class="service-detail__image-wrap">
+          <img src="{{ service.image.url }}"
+               alt="{% if LANGUAGE_CODE == 'ru' %}{{ service.image_alt_ru|default:service.name_ru }}{% else %}{{ service.image_alt_uk|default:service.name_uk }}{% endif %}"
+               class="service-detail__image"
+               loading="lazy"
+               width="560" height="420">
+        </figure>
+      {% endif %}
+    </div>
+  </div>
+</article>
+
+{% if related %}
+<section class="related-services section section--alt" aria-labelledby="related-heading">
+  <div class="container">
+    <h2 class="section__heading" id="related-heading">{% trans "Related services" %}</h2>
+    <div class="services-grid">
+      {% for s in related %}
+      <article class="service-card service-card--{{ s.slug }}">
+        <div class="service-card__content">
+          <h3 class="service-card__name">
+            {% if LANGUAGE_CODE == "ru" %}{{ s.name_ru }}{% else %}{{ s.name_uk }}{% endif %}
+          </h3>
+          <p class="service-card__desc">
+            {% if LANGUAGE_CODE == "ru" %}{{ s.short_desc_ru }}{% else %}{{ s.short_desc_uk }}{% endif %}
+          </p>
+          <a href="{{ s.get_absolute_url }}" class="btn btn--primary btn--sm">{% trans "Learn more" %}</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
