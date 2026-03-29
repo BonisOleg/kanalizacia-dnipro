@@ -1,7 +1,6 @@
 from django.http import HttpRequest
-from .models import SiteSettings
+from .hardcoded_data import SITE_SETTINGS
 
 
 def site_settings(request: HttpRequest) -> dict:
-    """Inject SiteSettings singleton into every template context."""
-    return {"site_settings": SiteSettings.get_solo()}
+    return {"site_settings": SITE_SETTINGS}

@@ -12,3 +12,5 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

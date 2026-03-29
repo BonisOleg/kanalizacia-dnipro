@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from apps.services.models import Service
+from apps.core.hardcoded_data import get_active_services, ServiceObj
 
 
 class StaticViewSitemap(Sitemap):
@@ -22,8 +22,8 @@ class ServiceSitemap(Sitemap):
     i18n = True
     languages = ["uk", "ru"]
 
-    def items(self):  # type: ignore
-        return Service.objects.filter(is_active=True)
+    def items(self) -> list[ServiceObj]:
+        return get_active_services()
 
-    def location(self, obj: Service) -> str:
+    def location(self, obj: ServiceObj) -> str:
         return obj.get_absolute_url()
