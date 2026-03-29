@@ -5,7 +5,7 @@
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   {# --- SEO meta (resolved in view context via page_key + seo_pages) --- #}
   {% if page_key and seo_pages %}
@@ -101,18 +101,20 @@
       {# Language switcher #}
       <div class="lang-switcher" role="navigation" aria-label="Language">
         {% get_current_language as cur_lang %}
-        <form action="{% url 'set_language' %}" method="post" class="lang-switcher__form">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <div class="lang-switcher__form">
           {% for lang_code, lang_name in LANGUAGES %}
-            <button type="submit" name="language" value="{{ lang_code }}"
-                    class="lang-switcher__btn {% if lang_code == cur_lang %}lang-switcher__btn--active{% endif %}"
-                    aria-label="{{ lang_name }}"
-                    aria-current="{% if lang_code == cur_lang %}true{% else %}false{% endif %}">
-              {{ lang_code|upper }}
-            </button>
+            <form action="{% url 'set_language' %}" method="post" style="display:contents">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{% if lang_code == 'ru' %}/ru/{% else %}/{% endif %}">
+              <button type="submit" name="language" value="{{ lang_code }}"
+                      class="lang-switcher__btn {% if lang_code == cur_lang %}lang-switcher__btn--active{% endif %}"
+                      aria-label="{{ lang_name }}"
+                      aria-current="{% if lang_code == cur_lang %}true{% else %}false{% endif %}">
+                {{ lang_code|upper }}
+              </button>
+            </form>
           {% endfor %}
-        </form>
+        </div>
       </div>
 
       <a href="tel:{{ site_settings.phone_1|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="btn btn--primary btn--sm site-header__call">
@@ -143,6 +145,24 @@
         {% if site_settings.phone_2 %}
           <a href="tel:{{ site_settings.phone_2|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="mobile-nav__phone">{{ site_settings.phone_2 }}</a>
         {% endif %}
+      </div>
+
+      <div class="mobile-nav__lang">
+        {% get_current_language as cur_lang %}
+        <div class="lang-switcher__form">
+          {% for lang_code, lang_name in LANGUAGES %}
+            <form action="{% url 'set_language' %}" method="post" style="display:contents">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{% if lang_code == 'ru' %}/ru/{% else %}/{% endif %}">
+              <button type="submit" name="language" value="{{ lang_code }}"
+                      class="lang-switcher__btn {% if lang_code == cur_lang %}lang-switcher__btn--active{% endif %}"
+                      aria-label="{{ lang_name }}"
+                      aria-current="{% if lang_code == cur_lang %}true{% else %}false{% endif %}">
+                {{ lang_code|upper }}
+              </button>
+            </form>
+          {% endfor %}
+        </div>
       </div>
     </nav>
   </div>
