@@ -1,3 +1,5 @@
+import dj_database_url
+
 from .base import *  # noqa: F401, F403
 
 DEBUG = False
@@ -15,6 +17,10 @@ _PROD_HOSTS = [".kanalizacia-dnepr.com"]
 for h in _PROD_HOSTS:
     if h not in ALLOWED_HOSTS:  # type: ignore # noqa: F405
         ALLOWED_HOSTS.append(h)  # type: ignore # noqa: F405
+
+_DATABASE_URL = os.environ.get("DATABASE_URL")  # type: ignore # noqa: F405
+if _DATABASE_URL:
+    DATABASES = {"default": dj_database_url.parse(_DATABASE_URL, conn_max_age=600)}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
