@@ -11,6 +11,11 @@ CSRF_TRUSTED_ORIGINS = [
     o.strip() for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()  # type: ignore # noqa: F405
 ]
 
+_PROD_HOSTS = [".kanalizacia-dnepr.com"]
+for h in _PROD_HOSTS:
+    if h not in ALLOWED_HOSTS:  # type: ignore # noqa: F405
+        ALLOWED_HOSTS.append(h)  # type: ignore # noqa: F405
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
