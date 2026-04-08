@@ -556,6 +556,35 @@ h3 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); }
   margin-bottom: 3rem;
 }
 
+.hero__phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.hero__phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--color-white);
+  text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0,0,0,.45);
+  transition: opacity 0.2s;
+}
+
+.hero__phone-link:hover,
+.hero__phone-link:focus-visible {
+  opacity: 0.8;
+}
+
+.hero__phone-link svg {
+  flex-shrink: 0;
+}
+
 .hero__trust {
   display: flex;
   flex-wrap: wrap;
@@ -1713,6 +1742,11 @@ h3 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); }
 
   .hero__cta {
     flex-direction: column;
+  }
+
+  .hero__phones {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .hero__trust {
